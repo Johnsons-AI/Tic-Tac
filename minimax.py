@@ -5,15 +5,6 @@ import platform
 import time
 from os import system
 
-"""
-An implementation of Minimax AI Algorithm in Tic Tac Toe,
-using Python.
-This software is available under GPL license.
-Author: Clederson Cruz
-Year: 2017
-License: GNU GENERAL PUBLIC LICENSE (GPL)
-"""
-
 HUMAN = -1
 COMP = +1
 board = [
@@ -21,6 +12,13 @@ board = [
     [0, 0, 0],
     [0, 0, 0],
 ]
+
+class User:
+    def __init__(self, name, pred_percentage, optimal_moves=0, total_moves=0):
+        self.name = name
+        self.pred_percentage = pred_percentage
+        self.optimal_moves = optimal_moves
+        self.total_moves = total_moves
 
 def evaluate(state):
     """
