@@ -2,7 +2,10 @@
 
 Summary of the change.
 
-Which issue is fixed (if any)
+ADDED:
+IMPROVED:
+FIXED:
+REMOVED:
 
 ## Type of change
 
