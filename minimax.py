@@ -195,6 +195,7 @@ def ai_turn(c_choice, h_choice, user_ai):
     if depth == 9:
         x = random.choice([0, 1, 2])
         y = random.choice([0, 1, 2])
+        set_move(x, y, COMP)
         return
 
     best_move = minimax(board, depth, COMP)
