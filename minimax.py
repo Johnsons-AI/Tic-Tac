@@ -14,9 +14,9 @@ board = [
 ]
 
 class UserAi:
-    def __init__(self, name, pred_percentage, optimal_moves=0, total_moves=0):
+    def __init__(self, name, optimal_percent, optimal_moves=0, total_moves=0):
         self.name = name
-        self.pred_percentage = pred_percentage
+        self.optimal_percent = optimal_percent
         self.optimal_moves = optimal_moves
         self.total_moves = total_moves
 
@@ -202,7 +202,7 @@ def ai_turn(c_choice, h_choice, user_ai):
     chance = random.randint(1,100)
 
     move = None
-    if chance <= user_ai.pred_percentage:
+    if chance <= user_ai.optimal_percent:
         move = best_move
         user_ai.optimal_moves += 1
     else:
@@ -264,7 +264,7 @@ def main():
     first = ''  # if human is the first
     
     # TODO @Cassandra: get user_ai from a CSV file and ask the player who the want to play
-    mock_user_ai = UserAi(name="mock", pred_percentage=50)
+    mock_user_ai = UserAi(name="mock", optimal_percent=50)
 
     # Human chooses X or O to play
     while h_choice != 'O' and h_choice != 'X':
