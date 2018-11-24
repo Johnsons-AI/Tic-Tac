@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from math import inf as infinity
-from random import choice
+import random
 import platform
 import time
 from os import system
@@ -13,7 +13,7 @@ board = [
     [0, 0, 0],
 ]
 
-class User:
+class UserAi:
     def __init__(self, name, pred_percentage, optimal_moves=0, total_moves=0):
         self.name = name
         self.pred_percentage = pred_percentage
@@ -176,7 +176,7 @@ def render(state, c_choice, h_choice):
     print('\n----------------')
 
 
-def ai_turn(c_choice, h_choice):
+def ai_turn(c_choice, h_choice, user_ai):
     """
     It calls the minimax function if the depth < 9,
     else it choices a random coordinate.
@@ -193,13 +193,24 @@ def ai_turn(c_choice, h_choice):
     render(board, c_choice, h_choice)
 
     if depth == 9:
-        x = choice([0, 1, 2])
-        y = choice([0, 1, 2])
-    else:
-        move = minimax(board, depth, COMP)
-        x, y = move[0], move[1]
+        x = random.choice([0, 1, 2])
+        y = random.choice([0, 1, 2])
+        return
 
+    best_move = minimax(board, depth, COMP)
+    chance = random.randint(1,100)
+
+    move = None
+    if chance <= user_ai.pred_percentage:
+        move = best_move
+        user_ai.optimal_moves += 1
+    else:
+        e_cells = empty_cells(board)
+        move = e_cells[random.randint(0, len(e_cells) - 1)]
+
+    x, y = move[0], move[1]
     set_move(x, y, COMP)
+    user_ai.total_moves += 1
     time.sleep(1)
 
 
@@ -250,6 +261,9 @@ def main():
     h_choice = '' # X or O
     c_choice = '' # X or O
     first = ''  # if human is the first
+    
+    # TODO @Cassandra: get user_ai from a CSV file and ask the player who the want to play
+    mock_user_ai = UserAi(name="mock", pred_percentage=50)
 
     # Human chooses X or O to play
     while h_choice != 'O' and h_choice != 'X':
@@ -282,11 +296,11 @@ def main():
     # Main loop of this game
     while len(empty_cells(board)) > 0 and not game_over(board):
         if first == 'N':
-            ai_turn(c_choice, h_choice)
+            ai_turn(c_choice, h_choice, mock_user_ai)
             first = ''
 
         human_turn(c_choice, h_choice)
-        ai_turn(c_choice, h_choice)
+        ai_turn(c_choice, h_choice, mock_user_ai)
 
     # Game over message
     if wins(board, HUMAN):
