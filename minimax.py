@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from math import inf as infinity
+from copy import deepcopy
 import random
 import platform
 import time
@@ -97,6 +98,10 @@ def valid_move(x, y):
     else:
         return False
 
+def would_win(move, state, player):
+    temp_s = deepcopy(state)
+    temp_s[move[0]][move[1]] = player
+    return wins(temp_s, player)
 
 def set_move(x, y, player):
     """
@@ -202,7 +207,7 @@ def ai_turn(c_choice, h_choice, user_ai):
     chance = random.randint(1,100)
 
     move = None
-    if chance <= user_ai.optimal_percent:
+    if chance <= user_ai.optimal_percent or would_win(best_move, board, COMP):
         move = best_move
         user_ai.optimal_moves += 1
     else:
