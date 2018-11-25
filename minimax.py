@@ -16,7 +16,7 @@ board = [
 
 class UserAi:
     def __init__(self, name, optimal_percent, optimal_moves=0, total_moves=0):
-        self.name = name
+        self.name = name.capitalize()
         self.optimal_percent = optimal_percent
         self.optimal_moves = optimal_moves
         self.total_moves = total_moves
@@ -184,7 +184,7 @@ def render(state, c_choice, h_choice):
     print('\n----------------')
 
 
-def ai_turn(c_choice, h_choice, user_ai):
+def ai_turn(c_choice, h_choice, user_choice):
     """
     It calls the minimax function if the depth < 9,
     else it choices a random coordinate.
@@ -197,7 +197,7 @@ def ai_turn(c_choice, h_choice, user_ai):
         return
 
     clean()
-    print('Computer turn [{}]'.format(c_choice))
+    print(f"{user_choice.name}'s turn [{c_choice}]")
     render(board, c_choice, h_choice)
 
     if depth == 9:
@@ -210,19 +210,19 @@ def ai_turn(c_choice, h_choice, user_ai):
     chance = random.randint(1,100)
 
     move = None
-    if chance <= user_ai.optimal_percent or would_win(best_move, board, COMP):
+    if chance <= user_choice.optimal_percent or would_win(best_move, board, COMP):
         move = best_move
-        user_ai.optimal_moves += 1
+        user_choice.optimal_moves += 1
     else:
         e_cells = empty_cells(board)
         move = e_cells[random.randint(0, len(e_cells) - 1)]
 
-    print(f"Chance: {chance}\n{user_ai.name}'s optimal percent: {user_ai.optimal_percent}")
+    print(f"Chance: {chance}\n{user_choice.name}'s optimal percent: {user_choice.optimal_percent}")
     print(f"Chose optimal choice: {move == best_move}", "\n")
 
     x, y = move[0], move[1]
     set_move(x, y, COMP)
-    user_ai.total_moves += 1
+    user_choice.total_moves += 1
     time.sleep(1)
 
 
@@ -245,7 +245,7 @@ def human_turn(c_choice, h_choice):
         7: [2, 0], 8: [2, 1], 9: [2, 2],
     }
 
-    print('Human turn [{}]'.format(h_choice))
+    print('Your turn [{}]'.format(h_choice))
     render(board, c_choice, h_choice)
 
     while (move < 1 or move > 9):
@@ -264,6 +264,25 @@ def human_turn(c_choice, h_choice):
             print('Bad choice')
 
 
+def get_user_lookup(users):
+    return {user.name.lower():user for user in users}
+
+def get_user_choice(user_lookup):
+    u_choice = ''
+
+    print("Who do you want to play?")
+    for name in user_lookup.keys():
+        print(f"- {name.capitalize()}")
+    
+    while(not u_choice.lower() in user_lookup):
+        try:
+            u_choice = input("\nEnter their name: ")
+            if not u_choice.lower() in user_lookup:
+                print("invalid user")
+        except: 
+            print("bad choice")
+    return user_lookup[u_choice.lower()]
+
 def main():
     """
     Main function that calls all functions
@@ -271,10 +290,16 @@ def main():
     clean()
     h_choice = '' # X or O
     c_choice = '' # X or O
+    user_choice = '' # selected user_choice
     first = ''  # if human is the first
     
-    # TODO @Cassandra: get user_ai from a CSV file and ask the player who the want to play
-    mock_user_ai = UserAi(name="mock", optimal_percent=50)
+
+    # TODO @Cassandra: get users from the CSV
+    mock_user = UserAi(name="mock", optimal_percent=50)
+    users = [mock_user]
+
+    user_lookup = get_user_lookup(users)
+    user_choice = get_user_choice(user_lookup)
 
     # Human chooses X or O to play
     while h_choice != 'O' and h_choice != 'X':
@@ -307,21 +332,21 @@ def main():
     # Main loop of this game
     while len(empty_cells(board)) > 0 and not game_over(board):
         if first == 'N':
-            ai_turn(c_choice, h_choice, mock_user_ai)
+            ai_turn(c_choice, h_choice, user_choice)
             first = ''
 
         human_turn(c_choice, h_choice)
-        ai_turn(c_choice, h_choice, mock_user_ai)
+        ai_turn(c_choice, h_choice, user_choice)
 
     # Game over message
     if wins(board, HUMAN):
         clean()
-        print('Human turn [{}]'.format(h_choice))
+        print('Your turn [{}]'.format(h_choice))
         render(board, c_choice, h_choice)
         print('YOU WIN!')
     elif wins(board, COMP):
         clean()
-        print('Computer turn [{}]'.format(c_choice))
+        print(f"{user_choice.name}'s turn [{c_choice}]")
         render(board, c_choice, h_choice)
         print('YOU LOSE!')
     else:
