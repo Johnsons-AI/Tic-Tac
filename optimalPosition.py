@@ -1,7 +1,7 @@
 import csv
 
 #Given a string of current board config, function opens csv file, makes a dictionary, & gets value from dict with current board position
-def optimalMove(fileName):
+def create_board_dict(fileName):
     with open(fileName) as csv_file:
         optimalDict = {}
 
@@ -17,8 +17,13 @@ def optimalMove(fileName):
                 line_count += 1
         return(optimalDict)
 
+def create_player_csv(boards):
+    # TODO @Zane: create player csv
+    pass
+
 def main():
-    optimalMove('SampleBoards.csv')
+    boards = create_board_dict('SampleBoards.csv')
+    create_player_csv(boards)
 
 
 main()

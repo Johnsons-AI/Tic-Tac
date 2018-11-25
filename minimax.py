@@ -283,6 +283,17 @@ def get_player_choice(player_lookup):
             print("bad choice")
     return player_lookup[u_choice.lower()]
 
+def create_players(player_csv):
+    # TODO @Cassandra: get players from the CSV
+    mock_player = Player(name="mock", optimal_percent=50)
+    players = [mock_player]
+    return players
+
+def update_players_csv(player_lookup):
+    # TODO @Nashawn: update player.csv 
+    # player_lookup holds {lowercased_name, player_object}
+    pass
+
 def main():
     """
     Main function that calls all functions
@@ -292,12 +303,8 @@ def main():
     c_choice = '' # X or O
     player_choice = '' # selected player_choice
     first = ''  # if human is the first
-    
 
-    # TODO @Cassandra: get players from the CSV
-    mock_player = Player(name="mock", optimal_percent=50)
-    players = [mock_player]
-
+    players = create_players("player.csv")
     player_lookup = get_player_lookup(players)
     player_choice = get_player_choice(player_lookup)
 
@@ -353,6 +360,8 @@ def main():
         clean()
         render(board, c_choice, h_choice)
         print('DRAW!')
+
+    update_players_csv(player_lookup)
 
     exit()
 
