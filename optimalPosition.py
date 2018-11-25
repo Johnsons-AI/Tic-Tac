@@ -18,8 +18,8 @@ def optimalMove(fileName):
         return(optimalDict)
 
 def main():
-    test = optimalMove('SampleBoards.csv')
-    print(test['[[0,0,0], [0,0,0], [0,0,0]]'])
+    optimalMove('SampleBoards.csv')
+
 
 
 main()
