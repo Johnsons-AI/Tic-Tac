@@ -168,6 +168,8 @@ def render(state, c_choice, h_choice):
     Print the board on console
     :param state: current state of the board
     """
+
+    counter = 1
     print('----------------')
     for row in state:
         print('\n----------------')
@@ -177,7 +179,8 @@ def render(state, c_choice, h_choice):
             elif cell == -1:
                 print('|', h_choice, '|', end='')
             else:
-                print('|', ' ', '|', end='')
+                print('|', counter, '|', end='')
+            counter += 1
     print('\n----------------')
 
 
@@ -214,6 +217,9 @@ def ai_turn(c_choice, h_choice, user_ai):
         e_cells = empty_cells(board)
         move = e_cells[random.randint(0, len(e_cells) - 1)]
 
+    print(f"Chance: {chance}\n{user_ai.name}'s optimal percent: {user_ai.optimal_percent}")
+    print(f"Chose optimal choice: {move == best_move}", "\n")
+
     x, y = move[0], move[1]
     set_move(x, y, COMP)
     user_ai.total_moves += 1
@@ -239,7 +245,6 @@ def human_turn(c_choice, h_choice):
         7: [2, 0], 8: [2, 1], 9: [2, 2],
     }
 
-    clean()
     print('Human turn [{}]'.format(h_choice))
     render(board, c_choice, h_choice)
 
