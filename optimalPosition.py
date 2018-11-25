@@ -13,12 +13,13 @@ def optimalMove(fileName):
                 line_count += 1
             else:
                 #print(f'{row[0]}\t{row[1]}\t{row[2]}\t')
-                optimalDict[f'{row[1]}'] = f'{row[2]}'
+                optimalDict[f'{row[1]}'] = list(f'{row[2]}'.split("[]"))
                 line_count += 1
         return(optimalDict)
 
 def main():
-    optimalMove('SampleBoards.csv')
+    test = optimalMove('SampleBoards.csv')
+    print(test['[[0,0,0], [0,0,0], [0,0,0]]'])
 
 
 main()
