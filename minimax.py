@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from math import inf as infinity
-from random import choice
+from copy import deepcopy
+import random
 import platform
 import time
 from os import system
@@ -13,10 +14,10 @@ board = [
     [0, 0, 0],
 ]
 
-class User:
-    def __init__(self, name, pred_percentage, optimal_moves=0, total_moves=0):
-        self.name = name
-        self.pred_percentage = pred_percentage
+class Player:
+    def __init__(self, name, optimal_percent, optimal_moves=0, total_moves=0):
+        self.name = name.capitalize()
+        self.optimal_percent = optimal_percent
         self.optimal_moves = optimal_moves
         self.total_moves = total_moves
 
@@ -97,6 +98,10 @@ def valid_move(x, y):
     else:
         return False
 
+def would_win(move, state, player):
+    temp_s = deepcopy(state)
+    temp_s[move[0]][move[1]] = player
+    return wins(temp_s, player)
 
 def set_move(x, y, player):
     """
@@ -163,6 +168,8 @@ def render(state, c_choice, h_choice):
     Print the board on console
     :param state: current state of the board
     """
+
+    counter = 1
     print('----------------')
     for row in state:
         print('\n----------------')
@@ -172,11 +179,12 @@ def render(state, c_choice, h_choice):
             elif cell == -1:
                 print('|', h_choice, '|', end='')
             else:
-                print('|', ' ', '|', end='')
+                print('|', counter, '|', end='')
+            counter += 1
     print('\n----------------')
 
 
-def ai_turn(c_choice, h_choice):
+def ai_turn(c_choice, h_choice, player_choice):
     """
     It calls the minimax function if the depth < 9,
     else it choices a random coordinate.
@@ -189,17 +197,32 @@ def ai_turn(c_choice, h_choice):
         return
 
     clean()
-    print('Computer turn [{}]'.format(c_choice))
+    print(f"{player_choice.name}'s turn [{c_choice}]")
     render(board, c_choice, h_choice)
 
     if depth == 9:
-        x = choice([0, 1, 2])
-        y = choice([0, 1, 2])
-    else:
-        move = minimax(board, depth, COMP)
-        x, y = move[0], move[1]
+        x = random.choice([0, 1, 2])
+        y = random.choice([0, 1, 2])
+        set_move(x, y, COMP)
+        return
 
+    best_move = minimax(board, depth, COMP)
+    chance = random.randint(1,100)
+
+    move = None
+    if chance <= player_choice.optimal_percent or would_win(best_move, board, COMP):
+        move = best_move
+        player_choice.optimal_moves += 1
+    else:
+        e_cells = empty_cells(board)
+        move = e_cells[random.randint(0, len(e_cells) - 1)]
+
+    print(f"Chance: {chance}\n{player_choice.name}'s optimal percent: {player_choice.optimal_percent}")
+    print(f"Chose optimal choice: {move == best_move}", "\n")
+
+    x, y = move[0], move[1]
     set_move(x, y, COMP)
+    player_choice.total_moves += 1
     time.sleep(1)
 
 
@@ -222,8 +245,7 @@ def human_turn(c_choice, h_choice):
         7: [2, 0], 8: [2, 1], 9: [2, 2],
     }
 
-    clean()
-    print('Human turn [{}]'.format(h_choice))
+    print('Your turn [{}]'.format(h_choice))
     render(board, c_choice, h_choice)
 
     while (move < 1 or move > 9):
@@ -242,6 +264,25 @@ def human_turn(c_choice, h_choice):
             print('Bad choice')
 
 
+def get_player_lookup(players):
+    return {player.name.lower():player for player in players}
+
+def get_player_choice(player_lookup):
+    u_choice = ''
+
+    print("Who do you want to play?")
+    for name in player_lookup.keys():
+        print(f"- {name.capitalize()}")
+    
+    while(not u_choice.lower() in player_lookup):
+        try:
+            u_choice = input("\nEnter their name: ")
+            if not u_choice.lower() in player_lookup:
+                print("invalid player")
+        except: 
+            print("bad choice")
+    return player_lookup[u_choice.lower()]
+
 def main():
     """
     Main function that calls all functions
@@ -249,7 +290,16 @@ def main():
     clean()
     h_choice = '' # X or O
     c_choice = '' # X or O
+    player_choice = '' # selected player_choice
     first = ''  # if human is the first
+    
+
+    # TODO @Cassandra: get players from the CSV
+    mock_player = Player(name="mock", optimal_percent=50)
+    players = [mock_player]
+
+    player_lookup = get_player_lookup(players)
+    player_choice = get_player_choice(player_lookup)
 
     # Human chooses X or O to play
     while h_choice != 'O' and h_choice != 'X':
@@ -282,21 +332,21 @@ def main():
     # Main loop of this game
     while len(empty_cells(board)) > 0 and not game_over(board):
         if first == 'N':
-            ai_turn(c_choice, h_choice)
+            ai_turn(c_choice, h_choice, player_choice)
             first = ''
 
         human_turn(c_choice, h_choice)
-        ai_turn(c_choice, h_choice)
+        ai_turn(c_choice, h_choice, player_choice)
 
     # Game over message
     if wins(board, HUMAN):
         clean()
-        print('Human turn [{}]'.format(h_choice))
+        print('Your turn [{}]'.format(h_choice))
         render(board, c_choice, h_choice)
         print('YOU WIN!')
     elif wins(board, COMP):
         clean()
-        print('Computer turn [{}]'.format(c_choice))
+        print(f"{player_choice.name}'s turn [{c_choice}]")
         render(board, c_choice, h_choice)
         print('YOU LOSE!')
     else:
