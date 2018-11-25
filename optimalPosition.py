@@ -14,7 +14,7 @@ def optimalMove(fileName):
             else:
                 #print(f'{row[0]}\t{row[1]}\t{row[2]}\t')
                 temp = f'{row[2]}'
-                temp_list = [[int(temp[1])], [int(temp[4])]]
+                temp_list = [int(temp[1]), int(temp[4])]
                 
                 optimalDict[f'{row[1]}'] = temp_list
                 line_count += 1
