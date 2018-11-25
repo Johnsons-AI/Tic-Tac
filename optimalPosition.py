@@ -1,8 +1,8 @@
 import csv
 
 #Given a string of current board config, function opens csv file, makes a dictionary, & gets value from dict with current board position
-def optimalMove(currentBoard):
-    with open('SampleBoards.csv') as csv_file:
+def optimalMove(fileName):
+    with open(fileName) as csv_file:
         optimalDict = {}
 
         csv_reader = csv.reader(csv_file, delimiter=',')
@@ -15,7 +15,10 @@ def optimalMove(currentBoard):
                 #print(f'{row[0]}\t{row[1]}\t{row[2]}\t')
                 optimalDict[f'{row[1]}'] = f'{row[2]}'
                 line_count += 1
-        return(optimalDict[currentBoard])
+        return(optimalDict)
+
+def main():
+    optimalMove('SampleBoards.csv')
 
 
-print(optimalMove('[[0,0,1], [0,-1,0], [1,0,0-1]]')) #Should print out [1][3]
+main()
