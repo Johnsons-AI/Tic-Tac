@@ -30,7 +30,7 @@ def create_visualizations(dataframe):
         total_moves = dataframe.iloc[i]['total_moves_count']
         optimal_moves = dataframe.iloc[i]['optimal_moves_count']
         plt.xlabel(dataframe.iloc[i]['Name'] + ' Total Moves VS Optimal Moves')
-        plt.pie([total_moves - optimal_moves, optimal_moves], autopct='%1.0f%%', pctdistance=1.1, labeldistance=1.2)
+        plt.pie([total_moves - optimal_moves, optimal_moves], autopct='%1.0f%%', pctdistance=1.1, labeldistance=1.3)
         plt.legend(['Total Moves', 'Optimal Moves'], loc='upper right')
         plt.savefig('Visualizations/' + dataframe.iloc[i]['Name'] + '_piechart.png')
         plt.clf()
