@@ -4,6 +4,7 @@ from copy import deepcopy
 import random
 import platform
 import time
+import csv
 from os import system
 
 HUMAN = -1
@@ -289,10 +290,27 @@ def create_players(player_csv):
     players = [mock_player]
     return players
 
-def update_players_csv(player_lookup):
-    # TODO @Nashawn: update player.csv 
-    # player_lookup holds {lowercased_name, player_object}
-    pass
+# This method takes in the player object and updates the CSV with the latest data from the object at the time of being called.
+
+def update_players_csv(player):
+    
+    newPlayerData = [player.name, player.optimal_moves , player.total_moves, player.optimal_percent]
+
+    with open('players.csv', 'r') as readFile:
+        reader = csv.reader(readFile)
+        lines = list(reader)
+        print(lines)
+        for i in range(len(lines)):
+            if lines[i][0] == player:
+                print(lines[i])
+                lines[i] = newPlayerData
+
+    with open('player.csv', 'w') as writeFile:
+        writer = csv.writer(writeFile)
+        writer.writerows(lines)
+
+    readFile.close()
+    writeFile.close()
 
 def main():
     """
