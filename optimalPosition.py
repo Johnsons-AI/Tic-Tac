@@ -22,8 +22,8 @@ def create_player_csv(boards):
     pass
 
 def main():
-    boards = create_board_dict('SampleBoards.csv')
+    boards = create_board_dict('CSVFolder/SampleBoards.csv')
     create_player_csv(boards)
 
-
-main()
+if __name__ == '__main__'
+    main()
