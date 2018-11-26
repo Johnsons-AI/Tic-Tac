@@ -39,7 +39,7 @@ def create_visualizations(dataframe):
 
 
 def main():
-	dataframe = read_in_csv('mock_player_data.csv')
+	dataframe = read_in_csv('CSVFolder/mock_player_data.csv')
 	create_visualizations(dataframe)
 	print(dataframe.head())
 

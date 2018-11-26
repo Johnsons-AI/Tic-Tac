@@ -23,11 +23,7 @@ def create_board_dict(fileName):
 def create_player_csv(boards):
     # TODO @Zane: create player csv
     pass
-
-def main():
-    boards = create_board_dict('SampleBoards.csv')
-    create_player_csv(boards)
-
+  
 '''
 #Test to see if dictionary prints out the correct optimal position
 def test():
@@ -44,8 +40,9 @@ def test():
                 line_count += 1
 '''
 
-main()
+def main():
+    boards = create_board_dict('CSVFolder/SampleBoards.csv')
+    create_player_csv(boards)
 
-#test()
-
-
+if __name__ == '__main__'
+    main()
