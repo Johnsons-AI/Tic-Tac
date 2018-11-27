@@ -296,7 +296,7 @@ def update_players_csv(player):
     
     newPlayerData = [player.name, player.optimal_moves , player.total_moves, player.optimal_percent]
 
-    with open('players.csv', 'r') as readFile:
+    with open('CSVFolder/player.csv', 'r') as readFile:
         reader = csv.reader(readFile)
         lines = list(reader)
         print(lines)
@@ -305,7 +305,7 @@ def update_players_csv(player):
                 print(lines[i])
                 lines[i] = newPlayerData
 
-    with open('player.csv', 'w') as writeFile:
+    with open('CSVFolder/player.csv', 'w') as writeFile:
         writer = csv.writer(writeFile)
         writer.writerows(lines)
 
@@ -322,7 +322,7 @@ def main():
     player_choice = '' # selected player_choice
     first = ''  # if human is the first
 
-    players = create_players("player.csv")
+    players = create_players("CSVFolder/player.csv")
     player_lookup = get_player_lookup(players)
     player_choice = get_player_choice(player_lookup)
 
