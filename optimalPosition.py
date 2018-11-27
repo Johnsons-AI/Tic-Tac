@@ -27,7 +27,7 @@ def create_player_csv(boards):
 '''
 #Test to see if dictionary prints out the correct optimal position
 def test():
-    fileName = 'SampleBoards.csv'
+    fileName = 'CSVFolder/SampleBoards.csv'
     with open(fileName) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         line_count = 0
@@ -35,7 +35,7 @@ def test():
             if line_count == 0:
                 line_count += 1
             else:        
-                test = optimalMove('SampleBoards.csv')
+                test = create_board_dict('CSVFolder/SampleBoards.csv')
                 print(test[f'{row[1]}'])
                 line_count += 1
 '''
