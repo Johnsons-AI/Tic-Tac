@@ -68,7 +68,7 @@ def create_board_dict(fileName):
 
 def create_player_csv(boards):
     # TODO @Zane: create player csv
-    with open ('player.csv', 'w', newline='') as s:
+    with open ('CSVFolder/player.csv', 'w', newline='') as s:
         fileWriter = csv.writer(s)
 
         fileWriter.writerow(['Name', 'optimal_moves_count', 'total_moves_count', 'predicted_percentage'])
