@@ -71,6 +71,8 @@ def create_player_csv(boards):
     with open ('player.csv', 'w', newline='') as s:
         fileWriter = csv.writer(s)
 
+        fileWriter.writerow(['Name', 'optimal_moves_count', 'total_moves_count', 'predicted_percentage'])
+
         flag = 'y'
 
         while flag == 'y':
@@ -115,7 +117,7 @@ def create_player_csv(boards):
             print('You got ', userCorrect, ' out of ', total, ' correct\n')
             
 
-            fileWriter.writerow([playerName, finalPercent, 0, 0])
+            fileWriter.writerow([playerName, 0, 0, finalPercent])
 
             flag = input('Would you like to add a person for me to learn from? (y/n): ').lower()
   
