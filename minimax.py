@@ -22,10 +22,6 @@ class Player:
         self.optimal_moves = optimal_moves
         self.total_moves = total_moves
 
-#    def __repr__(self):
-#        print(f'Name = {self.name}', f'Predicted Percentage = {self.optimal_percent}',
-#              f'Optimal Moves = {self.optimal_moves}', f'Total Moves = {self.total_moves}')
-
 def evaluate(state):
     """
     Function to heuristic evaluation of state.
@@ -289,7 +285,6 @@ def get_player_choice(player_lookup):
     return player_lookup[u_choice.lower()]
 
 def create_players(player_csv):
-    # TODO @Cassandra: get players from the CSV
     with open(player_csv) as csv_file:
         players = []
         csv_reader = csv.reader(csv_file, delimiter=',')
