@@ -13,7 +13,7 @@ Then using that probability, our AI will either choose that move or a random mov
 Upon completing the project we were able to compare our Optimal Moves to Total Moves and found several other key datapoints. We also, compared Predicted Percent to Actual Percent.
 
 ### Total Moves VS Opitmal Moves
-[alt text](https://github.com/Johnsons-AI/Tic-Tac/blob/master/Visualizations/total_moves_vs_optimal_moves.png)
+![Screenshot](https://github.com/Johnsons-AI/Tic-Tac/blob/master/Visualizations/total_moves_vs_optimal_moves.png)
 
 ### Predicted Percent VS Actual Percent 
 [alt text](https://github.com/Johnsons-AI/Tic-Tac/blob/master/Visualizations/actual_percent_vs_predicted_percentage.png)
