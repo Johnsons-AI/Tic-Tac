@@ -6,29 +6,29 @@ def read_in_csv(file_name):
 	return pd.read_csv(file_name)
 
 def create_visualizations(dataframe):
-    plt.figure(figsize=(800,800))
-    dataframe.plot.bar(x='Name', y='total_moves_count')
+    dataframe.plot.bar(x='Name', y='total_moves_count', figsize=(8, 8))
     plt.xlabel('Names')
     plt.ylabel('Total Moves')
     plt.savefig('Visualizations/total_move_bar_plot.png')
     plt.clf()
-    dataframe.plot.bar(x='Name', y='optimal_moves_count')
+    dataframe.plot.bar(x='Name', y='optimal_moves_count', figsize=(8, 8))
     plt.xlabel('Names')
     plt.ylabel('Optimal Moves')
     plt.savefig('Visualizations/optimal_move_bar_plot.png')
     plt.clf()
     dataframe.plot.bar(x='Name',
                 y=['optimal_moves_count',
-                'total_moves_count']
+                'total_moves_count'], figsize=(8, 8)
                 )
     plt.xlabel('Names')
     plt.ylabel('Total Moves VS Optimal Moves')
     plt.savefig('Visualizations/total_moves_vs_optimal_moves.png')
     # Create Pie Charts
     plt.clf()
-    dataframe['actual_percent'] =  int((dataframe['optimal_moves_count']/dataframe['total_moves_count']) * 100)
+    dataframe['actual_percent'] =  (dataframe['optimal_moves_count']/dataframe['total_moves_count']) * 100
+    dataframe['actual_percent'] = pd.to_numeric(dataframe['actual_percent'], downcast='signed')
     dataframe.plot.bar(x='Name',
-                       y=['actual_percent', 'predicted_percentage']
+                       y=['actual_percent', 'predicted_percentage'], figsize=(8, 8)
                        )
     plt.xlabel('Names')
     plt.ylabel('Actual Percent VS Predicted Percent')
@@ -50,7 +50,7 @@ def create_visualizations(dataframe):
 def main():
 	dataframe = read_in_csv('CSVFolder/player.csv')
 	create_visualizations(dataframe)
-	print(dataframe.head(n=1))
+	print(dataframe.head())
 
 if __name__ == '__main__':
 	main()	
