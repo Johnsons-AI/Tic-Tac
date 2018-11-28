@@ -16,10 +16,10 @@ Upon completing the project we were able to compare our Optimal Moves to Total M
 ![Screenshot](https://github.com/Johnsons-AI/Tic-Tac/blob/master/Visualizations/total_moves_vs_optimal_moves.png)
 
 ### Predicted Percent VS Actual Percent 
-[alt text](https://github.com/Johnsons-AI/Tic-Tac/blob/master/Visualizations/actual_percent_vs_predicted_percentage.png)
+![Screenshot](https://github.com/Johnsons-AI/Tic-Tac/blob/master/Visualizations/actual_percent_vs_predicted_percentage.png)
 
 ### Sample Pie Chart
-[alt text](https://github.com/Johnsons-AI/Tic-Tac/blob/master/Visualizations/zane_piechart.png)
+![Screenshot](https://github.com/Johnsons-AI/Tic-Tac/blob/master/Visualizations/zane_piechart.png)
 
 
 # Tasks
