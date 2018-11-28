@@ -285,24 +285,29 @@ def get_player_choice(player_lookup):
     return player_lookup[u_choice.lower()]
 
 def create_players(player_csv):
-    # TODO @Cassandra: get players from the CSV
-    mock_player = Player(name="mock", optimal_percent=50)
-    players = [mock_player]
+    with open(player_csv) as csv_file:
+        players = []
+        csv_reader = csv.reader(csv_file, delimiter=',')
+        isThisTheHeader = False
+        for row in csv_reader:
+            if not isThisTheHeader:
+                isThisTheHeader = True
+            else:
+                player = Player(name=row[0], optimal_percent=int(row[3]), optimal_moves=int(row[1]), total_moves=int(row[2]))
+                players.append(player)
     return players
 
 # This method takes in the player object and updates the CSV with the latest data from the object at the time of being called.
 
 def update_players_csv(player):
     
-    newPlayerData = [player.name, player.optimal_moves , player.total_moves, player.optimal_percent]
+    newPlayerData = [player.name.lower(), player.optimal_moves , player.total_moves, player.optimal_percent]
 
     with open('CSVFolder/player.csv', 'r') as readFile:
         reader = csv.reader(readFile)
         lines = list(reader)
-        print(lines)
-        for i in range(len(lines)):
-            if lines[i][0] == player:
-                print(lines[i])
+        for i in range(1, len(lines)):
+            if lines[i][0] == player.name.lower():
                 lines[i] = newPlayerData
 
     with open('CSVFolder/player.csv', 'w') as writeFile:
@@ -379,7 +384,7 @@ def main():
         render(board, c_choice, h_choice)
         print('DRAW!')
 
-    update_players_csv(player_lookup)
+    update_players_csv(player_choice)
 
     exit()
 

@@ -117,7 +117,7 @@ def create_player_csv(boards):
             print('You got ', userCorrect, ' out of ', total, ' correct\n')
             
 
-            fileWriter.writerow([playerName, 0, 0, finalPercent])
+            fileWriter.writerow([playerName.lower(), 0, 0, finalPercent])
 
             flag = input('Would you like to add a person for me to learn from? (y/n): ').lower()
   
