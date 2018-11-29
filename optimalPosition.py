@@ -3,7 +3,8 @@ from minimax import render
 from minimax import empty_cells as get_empty_cells
 from minimax import would_win
 from minimax import wins
-import random
+from minimax import get_best_move
+from random import randint
 
 
 def generate_board(pieces, user_first=False, max_attempts=3,  attempt=1):
@@ -69,7 +70,7 @@ def get_non_win_move(board, player_value):
     move = None
 
     while True:
-        e_rand_index = random.randint(0, len(e_cells) - 1)
+        e_rand_index = randint(0, len(e_cells) - 1)
         move = e_cells.pop(e_rand_index)
         found_move = not would_win(move, board, player_value)
 
@@ -105,15 +106,12 @@ def create_board_dict(fileName):
         # converting optimalDict to int keys
         for boardConfig in optimalDict:
 
-                # converting string from leron's csv file to list of lists for render parameter
+            # converting string from leron's csv file to list of lists for render parameter
             bareString = boardConfig.replace('[', '').replace(
                 ']', '').replace(',', '').replace(' ', '')
 
             bareStrList = list(bareString)
             fullNumList = []
-            list1 = []
-            list2 = []
-            list3 = []
 
             i = 0
             while i < len(bareStrList):
@@ -127,19 +125,9 @@ def create_board_dict(fileName):
                     tempI = int(tempS)
                     fullNumList.append(tempI)
                     i += 1
-            for s in range(0, 3):
-                list1.append(fullNumList[s])
-                tuple1 = tuple(list1)
-            for s in range(3, 6):
-                list2.append(fullNumList[s])
-                tuple2 = tuple(list2)
-            for s in range(6, 9):
-                list3.append(fullNumList[s])
-                tuple3 = tuple(list3)
 
             # converted list for key use
-           # finalList = [list1, list2, list3]
-            finalTuple = (tuple1, tuple2, tuple3)
+            finalTuple = get_tuple_board(fullNumList)
 
             tempList = optimalDict[boardConfig]
 
@@ -166,31 +154,23 @@ def create_player_csv(boards):
 
             move = -1
             moves = {
-                1: [0, 0], 2: [0, 1], 3: [0, 2],
-                4: [1, 0], 5: [1, 1], 6: [1, 2],
-                7: [2, 0], 8: [2, 1], 9: [2, 2],
+                1: (0, 0), 2: (0, 1), 3: (0, 2),
+                4: (1, 0), 5: (1, 1), 6: (1, 2),
+                7: (2, 0), 8: (2, 1), 9: (2, 2),
             }
 
             print('Hey, I want to learn how you play.\nI need you give me a few inputs based on certain tic tac toe board scenarios.\n')
             playerName = input('Enter your name: ')
 
-            boardDict = boards
-
-            for currBoard in boardDict:
+            for board, best_move in boards.items():
                 total += 1
-                if stateCount == 9:
-                    playerSymbol = 'O'
-                else:
-                    stateCount += 1
-
-                # rendering board for user
-                render(currBoard, 'O', 'X')
+                render(board, 'O', 'X')
 
                 print('\n You are the player using', playerSymbol)
                 move = int(input('\n Use numpad (1..9): '))
 
                 # counts correct answers
-                if boardDict[currBoard] == moves[move]:
+                if best_move == moves[move]:
                     userCorrect += 1
 
             # correct percentage
@@ -210,8 +190,50 @@ def create_player_csv(boards):
                 'Would you like to add a person for me to learn from? (y/n): ').lower()
 
 
+def get_tuple_board(board):
+    return tuple([tuple(row) for row in board])
+
+
+def is_even(num):
+    return num % 2 == 0
+     
+
+def get_random_boards(amount, min=1, max=6):
+    boards = {}
+    for _ in range(amount):
+        pieces = randint(min, max)
+        first = randint(0,1)
+        
+        # make sure the user actually has the next turn
+        if first and not is_even(pieces):
+            pieces = pieces + 1 if pieces == min else pieces - 1
+        elif not first and is_even(pieces):
+            pieces = pieces -1 if pieces == max else pieces + 1
+
+        board = None
+        tuple_board = None
+
+        while True:
+            try:
+                board = generate_board(pieces, first)
+            except AssertionError as ae:
+                print(ae)
+            else: 
+                tuple_board = get_tuple_board(board)
+
+            if not tuple_board in boards:
+                break
+
+        best_move = get_best_move(board, 9 - pieces, -1)
+        best_move.pop()
+        boards[tuple_board] = tuple(best_move)
+    
+    return boards
+
+
 def main():
-    boards = create_board_dict('CSVFolder/SampleBoards.csv')
+    # boards = create_board_dict('CSVFolder/SampleBoards.csv')
+    boards = get_random_boards(10)
     create_player_csv(boards)
 
 

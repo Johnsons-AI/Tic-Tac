@@ -123,7 +123,7 @@ def set_move(x, y, player):
         return False
 
 
-def minimax(state, depth, player):
+def get_best_move(state, depth, player):
     """
     AI function that choice the best move
     :param state: current state of the board
@@ -144,7 +144,7 @@ def minimax(state, depth, player):
     for cell in empty_cells(state):
         x, y = cell[0], cell[1]
         state[x][y] = player
-        score = minimax(state, depth - 1, -player)
+        score = get_best_move(state, depth - 1, -player)
         state[x][y] = 0
         score[0], score[1] = x, y
 
@@ -212,7 +212,7 @@ def ai_turn(c_choice, h_choice, player_choice):
         set_move(x, y, COMP)
         return
 
-    best_move = minimax(board, depth, COMP)
+    best_move = get_best_move(board, depth, COMP)
     chance = random.randint(1, 100)
 
     move = None
@@ -223,8 +223,7 @@ def ai_turn(c_choice, h_choice, player_choice):
         e_cells = empty_cells(board)
         move = e_cells[random.randint(0, len(e_cells) - 1)]
 
-    print(
-        f"Chance: {chance}\n{player_choice.name}'s optimal percent: {player_choice.optimal_percent}")
+    print(f"Chance: {chance}\n{player_choice.name}'s optimal percent: {player_choice.optimal_percent}")
     print(f"Chose optimal choice: {move == best_move}", "\n")
 
     x, y = move[0], move[1]
