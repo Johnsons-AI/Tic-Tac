@@ -16,7 +16,7 @@ board = [
 ]
 
 
-class Player:
+class Player_Ai:
     def __init__(self, name, optimal_percent, optimal_moves=0, total_moves=0):
         self.name = name.capitalize()
         self.optimal_percent = optimal_percent
@@ -300,7 +300,7 @@ def create_players(player_csv):
             if not isThisTheHeader:
                 isThisTheHeader = True
             else:
-                player = Player(name=row[0], optimal_percent=int(
+                player = Player_Ai(name=row[0], optimal_percent=int(
                     row[3]), optimal_moves=int(row[1]), total_moves=int(row[2]))
                 players.append(player)
     return players
