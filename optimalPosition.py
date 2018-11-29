@@ -149,17 +149,20 @@ def create_board_dict(fileName):
 
 
 def create_player_csv(boards):
-    with open('CSVFolder/player.csv', 'w', newline='') as s:
+    with open('CSVFolder/player.csv', 'a', newline='') as s:
         fileWriter = csv.writer(s)
-
-        fileWriter.writerow(['Name', 'optimal_moves_count',
-                             'total_moves_count', 'predicted_percentage'])
+        csv_dict = [row for row in csv.DictReader('CSVFolder/player.csv')]
+        if len(csv_dict) == 0:
+            fileWriter.writerow(
+                ['Name', 'optimal_moves_count', 'total_moves_count', 'predicted_percentage'])
 
         flag = 'y'
+        playerSymbol = 'X'
 
         while flag == 'y':
             userCorrect = 0
             total = 0
+            stateCount = 0
 
             move = -1
             moves = {
@@ -175,13 +178,16 @@ def create_player_csv(boards):
 
             for currBoard in boardDict:
                 total += 1
+                if stateCount == 9:
+                    playerSymbol = 'O'
+                else:
+                    stateCount += 1
 
                 # rendering board for user
                 render(currBoard, 'O', 'X')
 
-                print('\n')
-                move = int(
-                    input('You are the player using X. \n Use numpad (1..9): '))
+                print('\n You are the player using', playerSymbol)
+                move = int(input('\n Use numpad (1..9): '))
 
                 # counts correct answers
                 if boardDict[currBoard] == moves[move]:
