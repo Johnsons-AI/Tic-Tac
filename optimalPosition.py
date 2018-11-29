@@ -5,37 +5,57 @@ from minimax import would_win
 from minimax import wins
 import random
  
-def generate_board(peices, human_first=False, max_attempts=3,  attempt=1):
+def generate_board(pieces, user_first=False, max_attempts=3,  attempt=1):
+    """Generate a random board with no wins
+    
+    Arguments:
+        pieces {int} -- number of desired pieces on board
+    
+    Keyword Arguments:
+        user_first {bool} -- [description] (default: {False})
+        max_attempts {int} -- [description] (default: {3})
+        attempt {int} -- [description] (default: {1})
+    
+    Returns:
+        [type] -- [description]
+    """
+
     # if we attempted to generate a board with current config more than max_attempts times, stop
-    if attempt > max_attempts:
-        return None
-
-    print(f"attempt number : {attempt}")
-
-    """
-    computer value = 1
-    human value = -1
-    """
-
-    first_player = -1 if human_first else 1
+    assert pieces <= 9, "Board must have 9 pieces or less."
+    assert attempt <= max_attempts, "Reached max number of attempts."
+    
+    first_player = -1 if user_first else 1
     second_player = -first_player
 
     board = [[0, 0, 0],[0, 0, 0],[0, 0, 0]]
 
-    for i in range(1, peices+1):
+    for i in range(1, pieces+1):
         current_player = first_player if i % 2 != 0 else second_player
 
         # if no move could be found try again with a new board else set current player piece
         try:
             move = get_non_win_move(board, current_player)
         except ValueError as v_e:
-            return generate_board(peices, human_first, max_attempts, attempt + 1)
+            return generate_board(pieces, user_first, max_attempts, attempt + 1)
         else:
             board[move[0]][move[1]] = current_player
     
     return board
 
 def get_non_win_move(board, player_value):
+    """Get move that will not result in winning
+    
+    Arguments:
+        board {[int][int]} -- current state of board
+        player_value {int} -- player to find move for, 1 or -1
+    
+    Raises:
+        ValueError -- If every possible move will result in a win
+    
+    Returns:
+        [int] -- possible non-winning move, row:move[0] col:move[1]
+    """
+
     e_cells = get_empty_cells(board)
     found_move = False
     move = None
@@ -194,7 +214,7 @@ def main():
     # create_player_csv(boards)
 
     # TODO: take this out
-    b = generate_board(peices=9, max_attempts=10, human_first=False)
+    b = generate_board(pieces=9, max_attempts=10, user_first=False)
     valid = not wins(b, 1) or wins(b, -1)
     print("Number of pieces: 9")
     print(f"User piece: O")
@@ -204,7 +224,7 @@ def main():
 
     print("\n", '_' * 17, "\n")
 
-    b = generate_board(peices=9, max_attempts=10, human_first=True)
+    b = generate_board(pieces=9, max_attempts=10, user_first=True)
     valid = not wins(b, 1) or wins(b, -1)
     print("Number of pieces: 9")
     print(f"User piece: O")
