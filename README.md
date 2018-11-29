@@ -38,6 +38,9 @@ Upon completing the project we were able to compare our Optimal Moves to Total M
 ![Screenshot](https://github.com/Johnsons-AI/Tic-Tac/blob/master/Visualizations/zane_piechart.png)
 
 
-# Tasks
+### Respects
+We used the skeleton of a tic-tac-toe game and minimax algorithm from [here](https://github.com/Cledersonbc/tic-tac-toe-minimax).
+
+#### Tasks
 https://docs.google.com/document/d/1S_aaCiO6XnPOngXmRHI8aEOCuMqlua_LpZ4VwkkUAsc/edit?usp=sharing
 
