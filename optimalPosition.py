@@ -24,13 +24,14 @@ def generate_board(peices, human_first=False, max_attempts=3,  attempt=1):
 
     for i in range(1, peices+1):
         current_player = first_player if i % 2 != 0 else second_player
-        move = get_non_win_move(board, current_player)
 
-        # if no move could be found try again with a new board
-        if move == None:
+        # if no move could be found try again with a new board else set current player piece
+        try:
+            move = get_non_win_move(board, current_player)
+        except ValueError as v_e:
             return generate_board(peices, human_first, max_attempts, attempt + 1)
-
-        board[move[0]][move[1]] = current_player
+        else:
+            board[move[0]][move[1]] = current_player
     
     return board
 
@@ -46,9 +47,11 @@ def get_non_win_move(board, player_value):
 
         if found_move or not e_cells:
             break
-    
-    return move if found_move else None
 
+    if found_move:
+        return move
+    else:
+        raise ValueError("No move that will prevent winning")
 
 
 #Given a string of current board config, function opens csv file, makes a dictionary, & gets value from dict with current board position
@@ -191,19 +194,19 @@ def main():
     # create_player_csv(boards)
 
     # TODO: take this out
-    b = generate_board(peices=5, max_attempts=10, human_first=False)
+    b = generate_board(peices=9, max_attempts=10, human_first=False)
     valid = not wins(b, 1) or wins(b, -1)
-    print("Number of pieces: 5")
+    print("Number of pieces: 9")
     print(f"User piece: O")
     print(f"User first: False")
     print(f"No winner: {valid}")
     render(b, 'x', 'o')
 
     print("\n", '_' * 17, "\n")
-    
-    b = generate_board(peices=5, max_attempts=10, human_first=True)
+
+    b = generate_board(peices=9, max_attempts=10, human_first=True)
     valid = not wins(b, 1) or wins(b, -1)
-    print("Number of pieces: 5")
+    print("Number of pieces: 9")
     print(f"User piece: O")
     print(f"User first: True")
     print(f"No winner: {valid}")
