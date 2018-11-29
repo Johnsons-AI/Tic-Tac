@@ -204,45 +204,9 @@ def create_player_csv(boards):
                 'Would you like to add a person for me to learn from? (y/n): ').lower()
 
 
-'''
-#Test to see if dictionary prints out the correct optimal position
-def test():
-    fileName = 'CSVFolder/SampleBoards.csv'
-    with open(fileName) as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter=',')
-        line_count = 0
-        for row in csv_reader:
-            if line_count == 0:
-                line_count += 1
-            else:        
-                test = create_board_dict('CSVFolder/SampleBoards.csv')
-                print(test[f'{row[1]}'])
-                line_count += 1
-'''
-
-
 def main():
-    # boards = create_board_dict('CSVFolder/SampleBoards.csv')
-    # create_player_csv(boards)
-
-    # TODO: take this out
-    b = generate_board(pieces=9, max_attempts=10, user_first=False)
-    valid = not wins(b, 1) or wins(b, -1)
-    print("Number of pieces: 9")
-    print(f"User piece: O")
-    print(f"User first: False")
-    print(f"No winner: {valid}")
-    render(b, 'x', 'o')
-
-    print("\n", '_' * 17, "\n")
-
-    b = generate_board(pieces=9, max_attempts=10, user_first=True)
-    valid = not wins(b, 1) or wins(b, -1)
-    print("Number of pieces: 9")
-    print(f"User piece: O")
-    print(f"User first: True")
-    print(f"No winner: {valid}")
-    render(b, 'x', 'o')
+    boards = create_board_dict('CSVFolder/SampleBoards.csv')
+    create_player_csv(boards)
 
 
 if __name__ == '__main__':
