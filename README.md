@@ -2,15 +2,31 @@
 
 ## Description
 
-Create a Tic-Tac-Toe AI that learns to play like a human. For example, if Cassandra is playing against our AI. After an x amount of games our AI play style will mimic the style of Cassandra. 
+A Tic-Tac-Toe AI that learns to play like a user by utilizing the Minimax algorithm! 
 
-## The Approach
+Our game will create a probability/difficulty score derived from when the user picks the most optimal move given game states. 
+Then using that probability, we create an AI version of that player. It will either choose the best move or a random move when playing. 
 
-Trick out a Minimax Algorithm! Our AI will create a probability score of when the previous user picks the most optimal move. 
-Then using that probability, our AI will either choose that move or a random move. For example, After playing against Zane, our AI noticed Zane chooses the most optimal move 48% of the time. In return, our AI will choose the most optimal move 48% of the time.
+For example, after training with Zane, our AI noticed Zane chooses the most optimal move 48% of the time. In return, the Zane-AI will choose the most optimal move around 48% of the time.
 
-## Results
-Upon completing the project we were able to compare our Optimal Moves to Total Moves and found several other key datapoints. We also, compared Predicted Percent to Actual Percent.
+
+## The Approach 
+
+### Training
+- We generate a user desired amount of board states.
+- Find the optimal position of those random boards using the Minimax algorithm.
+- Ask the user to choose their next move given a state.
+- Keep track of how many moves they made that agrees with the Minimax algorithm
+- Generate their difficulty level from their total number of optimal-moves and their total moves/boards
+
+### Playing
+- Generate a probability that player ai (created above) would choose the best move
+- If this probability is within that player Predicted Percentage (from training), play the best move
+- If the next best/optimal move would make the ai win, play the best move
+- Else choose a random empty position on the board.
+
+## Results and Visualizations!
+Upon completing the project we were able to compare our Optimal Moves to Total Moves and found several key data points. We also compared Predicted Percent to Actual Percent.
 
 ### Total Moves VS Opitmal Moves
 ![Screenshot](https://github.com/Johnsons-AI/Tic-Tac/blob/master/Visualizations/total_moves_vs_optimal_moves.png)
