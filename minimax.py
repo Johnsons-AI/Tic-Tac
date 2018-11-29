@@ -15,12 +15,14 @@ board = [
     [0, 0, 0],
 ]
 
+
 class Player:
     def __init__(self, name, optimal_percent, optimal_moves=0, total_moves=0):
         self.name = name.capitalize()
         self.optimal_percent = optimal_percent
         self.optimal_moves = optimal_moves
         self.total_moves = total_moves
+
 
 def evaluate(state):
     """
@@ -83,7 +85,8 @@ def empty_cells(state):
 
     for x, row in enumerate(state):
         for y, cell in enumerate(row):
-            if cell == 0: cells.append([x, y])
+            if cell == 0:
+                cells.append([x, y])
     return cells
 
 
@@ -99,10 +102,12 @@ def valid_move(x, y):
     else:
         return False
 
+
 def would_win(move, state, player):
     temp_s = deepcopy(state)
     temp_s[move[0]][move[1]] = player
     return wins(temp_s, player)
+
 
 def set_move(x, y, player):
     """
@@ -208,7 +213,7 @@ def ai_turn(c_choice, h_choice, player_choice):
         return
 
     best_move = minimax(board, depth, COMP)
-    chance = random.randint(1,100)
+    chance = random.randint(1, 100)
 
     move = None
     if chance <= player_choice.optimal_percent or would_win(best_move, board, COMP):
@@ -218,7 +223,8 @@ def ai_turn(c_choice, h_choice, player_choice):
         e_cells = empty_cells(board)
         move = e_cells[random.randint(0, len(e_cells) - 1)]
 
-    print(f"Chance: {chance}\n{player_choice.name}'s optimal percent: {player_choice.optimal_percent}")
+    print(
+        f"Chance: {chance}\n{player_choice.name}'s optimal percent: {player_choice.optimal_percent}")
     print(f"Chose optimal choice: {move == best_move}", "\n")
 
     x, y = move[0], move[1]
@@ -266,7 +272,8 @@ def human_turn(c_choice, h_choice):
 
 
 def get_player_lookup(players):
-    return {player.name.lower():player for player in players}
+    return {player.name.lower(): player for player in players}
+
 
 def get_player_choice(player_lookup):
     u_choice = ''
@@ -274,15 +281,16 @@ def get_player_choice(player_lookup):
     print("Who do you want to play?")
     for name in player_lookup.keys():
         print(f"- {name.capitalize()}")
-    
+
     while(not u_choice.lower() in player_lookup):
         try:
             u_choice = input("\nEnter their name: ")
             if not u_choice.lower() in player_lookup:
                 print("invalid player")
-        except: 
+        except:
             print("bad choice")
     return player_lookup[u_choice.lower()]
+
 
 def create_players(player_csv):
     with open(player_csv) as csv_file:
@@ -293,15 +301,18 @@ def create_players(player_csv):
             if not isThisTheHeader:
                 isThisTheHeader = True
             else:
-                player = Player(name=row[0], optimal_percent=int(row[3]), optimal_moves=int(row[1]), total_moves=int(row[2]))
+                player = Player(name=row[0], optimal_percent=int(
+                    row[3]), optimal_moves=int(row[1]), total_moves=int(row[2]))
                 players.append(player)
     return players
 
 # This method takes in the player object and updates the CSV with the latest data from the object at the time of being called.
 
+
 def update_players_csv(player):
-    
-    newPlayerData = [player.name.lower(), player.optimal_moves , player.total_moves, player.optimal_percent]
+
+    newPlayerData = [player.name.lower(), player.optimal_moves,
+                     player.total_moves, player.optimal_percent]
 
     with open('CSVFolder/player.csv', 'r') as readFile:
         reader = csv.reader(readFile)
@@ -317,14 +328,15 @@ def update_players_csv(player):
     readFile.close()
     writeFile.close()
 
+
 def main():
     """
     Main function that calls all functions
     """
     clean()
-    h_choice = '' # X or O
-    c_choice = '' # X or O
-    player_choice = '' # selected player_choice
+    h_choice = ''  # X or O
+    c_choice = ''  # X or O
+    player_choice = ''  # selected player_choice
     first = ''  # if human is the first
 
     players = create_players("CSVFolder/player.csv")
