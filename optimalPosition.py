@@ -7,21 +7,26 @@ import random
 
 
 def generate_board(pieces, user_first=False, max_attempts=3,  attempt=1):
-    """Generate a random board with no wins
+    """
+    Generate a random board with no wins. 
+    The computer is 1 and the user is -1.
 
     Arguments:
         pieces {int} -- number of desired pieces on board
 
     Keyword Arguments:
-        user_first {bool} -- [description] (default: {False})
-        max_attempts {int} -- [description] (default: {3})
-        attempt {int} -- [description] (default: {1})
+        user_first {bool} -- is user making first move (default: {False})
+        max_attempts {int} -- max number of attempts to generate board (default: {3})
+        attempt {int} -- current attempt at generating board (default: {1})
+
+    Raises:
+        AssertionError -- "Board must have 9 pieces or less."
+        AssertionError -- "Reached max number of attempts."
 
     Returns:
-        [type] -- [description]
+        [int][int] -- board with desired config
     """
 
-    # if we attempted to generate a board with current config more than max_attempts times, stop
     assert pieces <= 9, "Board must have 9 pieces or less."
     assert attempt <= max_attempts, "Reached max number of attempts."
 
@@ -45,14 +50,15 @@ def generate_board(pieces, user_first=False, max_attempts=3,  attempt=1):
 
 
 def get_non_win_move(board, player_value):
-    """Get move that will not result in winning
+    """
+    Get move that will not result in winning
 
     Arguments:
         board {[int][int]} -- current state of board
         player_value {int} -- player to find move for, 1 or -1
 
     Raises:
-        ValueError -- If every possible move will result in a win
+        ValueError -- Every possible move will result in a win.
 
     Returns:
         [int] -- possible non-winning move, row:move[0] col:move[1]
@@ -73,7 +79,7 @@ def get_non_win_move(board, player_value):
     if found_move:
         return move
     else:
-        raise ValueError("No move that will prevent winning")
+        raise ValueError("Every possible move will result in a win.")
 
 
 # Given a string of current board config, function opens csv file, makes a dictionary, & gets value from dict with current board position
