@@ -1,5 +1,55 @@
 import csv
 from minimax import render
+from minimax import empty_cells as get_empty_cells
+from minimax import would_win
+from minimax import wins
+import random
+ 
+def generate_board(peices, human_first=False, max_attempts=3,  attempt=1):
+    # if we attempted to generate a board with current config more than max_attempts times, stop
+    if attempt > max_attempts:
+        return None
+
+    print(f"attempt number : {attempt}")
+
+    """
+    computer value = 1
+    human value = -1
+    """
+
+    first_player = -1 if human_first else 1
+    second_player = -first_player
+
+    board = [[0, 0, 0],[0, 0, 0],[0, 0, 0]]
+
+    for i in range(1, peices+1):
+        current_player = first_player if i % 2 != 0 else second_player
+        move = get_non_win_move(board, current_player)
+
+        # if no move could be found try again with a new board
+        if move == None:
+            return generate_board(peices, human_first, max_attempts, attempt + 1)
+
+        board[move[0]][move[1]] = current_player
+    
+    return board
+
+def get_non_win_move(board, player_value):
+    e_cells = get_empty_cells(board)
+    found_move = False
+    move = None
+
+    while True:
+        e_rand_index = random.randint(0, len(e_cells) - 1)
+        move = e_cells.pop(e_rand_index)
+        found_move = not would_win(move, board, player_value)
+
+        if found_move or not e_cells:
+            break
+    
+    return move if found_move else None
+
+
 
 #Given a string of current board config, function opens csv file, makes a dictionary, & gets value from dict with current board position
 def create_board_dict(fileName):
@@ -67,7 +117,6 @@ def create_board_dict(fileName):
         return(optimalDictConverted)
 
 def create_player_csv(boards):
-    # TODO @Zane: create player csv
     with open ('CSVFolder/player.csv', 'w', newline='') as s:
         fileWriter = csv.writer(s)
 
@@ -138,9 +187,27 @@ def test():
 '''
 
 def main():
-    boards = create_board_dict('CSVFolder/SampleBoards.csv')
-    create_player_csv(boards)
+    # boards = create_board_dict('CSVFolder/SampleBoards.csv')
+    # create_player_csv(boards)
+
+    # TODO: take this out
+    b = generate_board(peices=5, max_attempts=10, human_first=False)
+    valid = not wins(b, 1) or wins(b, -1)
+    print("Number of pieces: 5")
+    print(f"User piece: O")
+    print(f"User first: False")
+    print(f"No winner: {valid}")
+    render(b, 'x', 'o')
+
+    print("\n", '_' * 17, "\n")
     
+    b = generate_board(peices=5, max_attempts=10, human_first=True)
+    valid = not wins(b, 1) or wins(b, -1)
+    print("Number of pieces: 5")
+    print(f"User piece: O")
+    print(f"User first: True")
+    print(f"No winner: {valid}")
+    render(b, 'x', 'o')
 
 if __name__ == '__main__':
     main()
